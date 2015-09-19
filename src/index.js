@@ -1,4 +1,3 @@
-import "./store";
 import React from 'react';
 import App from './App';
 

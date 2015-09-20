@@ -5,22 +5,20 @@ import * as rook   from './validators/rook';
 import * as king   from './validators/king';
 import * as queen  from './validators/queen';
 
-// export const isValidMove = R.cond([[R.T, action => action]]);
-
-export const isValidMove = ({piece, action, state}) => {
-  switch(piece.type) {
+export const isValidMove = (action, state) => {
+  switch(action.type) {
     case pawn.TYPE:
-      return pawn.isValidMove({piece, action, state});
+      return pawn.isValidMove(action, state);
     case knight.TYPE:
-      return knight.isValidMove({piece, action, state});
+      return knight.isValidMove(action, state);
     case bishop.TYPE:
-      return bishop.isValidMove({piece, action, state});
+      return bishop.isValidMove(action, state);
     case rook.TYPE:
-      return rook.isValidMove({piece, action, state});
+      return rook.isValidMove(action, state);
     case king.TYPE:
-      return king.isValidMove({piece, action, state});
+      return king.isValidMove(action, state);
     case queen.TYPE:
-      return queen.isValidMove({piece, action, state});
+      return queen.isValidMove(action, state);
     default:
       return false;
   }

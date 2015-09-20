@@ -3,7 +3,7 @@ const BOARD_SIZE = R.range(0, 7);
 export const inRanks = R.pipe(R.equals, R.flip(R.find)(BOARD_SIZE));
 export const inFiles = R.pipe(R.equals, R.flip(R.find)(BOARD_SIZE));
 
-let samePosition = R.curry((action, piece) => action.rank === piece.rank && action.file === piece.file);
+export const samePosition = R.curry((action, piece) => action.rank === piece.rank && action.file === piece.file);
 let areOwnPieces = R.curry((action, piece) => action.color === piece.color);
 let isKing       = R.curry((action, piece) => piece.type === 'king');
 let isOwnKing    = R.both(areOwnPieces, isKing);

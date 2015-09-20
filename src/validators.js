@@ -4,13 +4,10 @@ import * as bishop from './validators/bishop';
 import * as rook   from './validators/rook';
 import * as king   from './validators/king';
 import * as queen  from './validators/queen';
-
-
-let hasSameId = R.pipe(R.prop('id'), R.propEq('id'));
-let findPiece = R.pipe(hasSameId, R.find);
+import * as piece  from './validators/piece';
 
 export const isValidMove = ({action, state}) => {
-  switch(findPiece(action)(state).type) {
+  switch(piece.findPiece({action, state}).type) {
     case pawn.TYPE:
       return pawn.isValidMove({action, state});
     case knight.TYPE:

@@ -30,12 +30,11 @@ let isLastRank        = R.cond([
   [R.T, R.F]
 ]);
 
-let enPassant         = R.F; // TODO En Passant;
 let diagonalCapture   = R.allPass([piece.isCapture, isDiagonal]);
 let forwardUnoccupied = R.allPass([isForwardOne, piece.isUnoccupied]);
 let pawnPromotion     = R.allPass([isLastRank, R.either([diagonalCapture, forwardUnoccupied])]);
 let firstMoveTwo      = R.allPass([isForwardTwo, piece.isUnoccupied, isFirstMove]);
-let isValidPawnMove   = R.anyPass([enPassant, pawnPromotion, firstMoveTwo, forwardUnoccupied, diagonalCapture]);
+let isValidPawnMove   = R.anyPass([pawnPromotion, firstMoveTwo, forwardUnoccupied, diagonalCapture]);
 
 export const isValidMove = R.cond([
   [R.allPass([piece.isValidMove, isValidPawnMove]), R.prop('action')],

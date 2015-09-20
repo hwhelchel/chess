@@ -1,4 +1,4 @@
-import * as piece from './piece.js';
+import * as piece from './piece';
 
 export const TYPE = 'rook';
 
@@ -25,7 +25,7 @@ let hasClearPassage = R.cond([
   [R.T, R.F]
 ]);
 
-let isValidRookMove = R.allPass([R.either([sameRank, sameFile]), hasClearPassage]);
+export const isValidRookMove = R.allPass([R.either([sameRank, sameFile]), hasClearPassage]);
 
 export const isValidMove = R.cond([
   [R.allPass([piece.isValidMove, isValidRookMove]), R.prop('action')],

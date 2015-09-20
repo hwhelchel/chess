@@ -1,4 +1,4 @@
-import * as piece from './piece.js';
+import * as piece from './piece';
 
 export const TYPE = 'bishop';
 
@@ -31,7 +31,7 @@ let hasClearPassage = ({action, state}) => {
   return R.none(areBetween({movedPiece, action}), piecesOnDiagonal);
 };
 
-let isValidBishopMove = R.allPass([isDiagonal, hasClearPassage]);
+export const isValidBishopMove = R.allPass([isDiagonal, hasClearPassage]);
 
 export const isValidMove = R.cond([
   [R.allPass([piece.isValidMove, isValidBishopMove]), R.prop('action')],

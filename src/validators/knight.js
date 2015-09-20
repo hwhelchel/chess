@@ -1,4 +1,4 @@
-import * as piece from './piece.js';
+import * as piece from './piece';
 
 export const TYPE = 'knight';
 

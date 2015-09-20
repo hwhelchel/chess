@@ -23,8 +23,7 @@ let withUnfrozenPiece = setState(unfrozenPiece);
 export const chessPieces = (state = initialState, action) => {
   switch(action.type) {
     case MOVE_PIECE:
-
-      return move(isValidMove(action, state), state);
+      return move(isValidMove({action, state}), state);
     case TAKE_PIECE:
       return take(action, state);
     case FREEZE_PIECE:

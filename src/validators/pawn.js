@@ -9,8 +9,8 @@ let isDiagonal        = R.cond([
 ]);
 
 let isForwardOne      = R.cond([
-  [piece.isColor('white'), R.allPass([piece.didMove('rank', 1),  piece.didMove('file', 0)])],
-  [piece.isColor('black'), R.allPass([piece.didMove('rank', -1), piece.didMove('file', 0)])],
+  [piece.isColor('white'), R.allPass([piece.didMove('rank', 1),  piece.didMoveOver(0)])],
+  [piece.isColor('black'), R.allPass([piece.didMove('rank', -1), piece.didMoveOver(0)])],
   [R.T, R.F]
 ]);
 
@@ -19,8 +19,8 @@ let isStartingRank    = R.pipe(R.equals, R.flip(R.find)(STARTING_RANKS));
 let isFirstMove       = R.pipe(piece.findPiece, R.prop('rank'), isStartingRank);
 
 let isForwardTwo      = R.cond([
-  [piece.isColor('white'), R.allPass([piece.didMove('rank', 2),  piece.didMove('file', 0)])],
-  [piece.isColor('black'), R.allPass([piece.didMove('rank', -2), piece.didMove('file', 0)])],
+  [piece.isColor('white'), R.allPass([piece.didMove('rank', 2),  piece.didMoveOver(0)])],
+  [piece.isColor('black'), R.allPass([piece.didMove('rank', -2), piece.didMoveOver(0)])],
   [R.T, R.F]
 ]);
 

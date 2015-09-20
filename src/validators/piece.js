@@ -1,8 +1,7 @@
-const RANKS = [1, 2, 3, 4, 5, 6, 7, 8];
-const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const BOARD_SIZE = R.range(0, 7);
 
-let inRanks = R.pipe(R.equals, R.flip(R.find)(RANKS));
-let inFiles = R.pipe(R.equals, R.flip(R.find)(FILES));
+export const inRanks = R.pipe(R.equals, R.flip(R.find)(BOARD_SIZE));
+export const inFiles = R.pipe(R.equals, R.flip(R.find)(BOARD_SIZE));
 
 let samePosition = R.curry((action, piece) => action.rank === piece.rank && action.file === piece.file);
 let areOwnPieces = R.curry((action, piece) => action.color === piece.color);
@@ -35,9 +34,9 @@ export const didMoveOver  = n => R.either([didMove('file', n), didMove('file', -
 export const isCapture    = ({action, state}) => R.any(piece => R.allPass([isSameLocation, isDiffColor])(piece, action))(state);
 export const isUnoccupied = ({action, state}) => R.none(piece => isSameLocation(piece, action))(state);
 export const reset = ({action, state}) => {
-  action.rank  = findPiece({action, state}).rank;
-  action.file  = findPiece({action, state}).file;
-  action.reset = true;
+  action.rank        = findPiece({action, state}).rank;
+  action.file        = findPiece({action, state}).file;
+  action.invalidated = true;
   return action;
 };
 

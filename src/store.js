@@ -26,7 +26,7 @@ let unsubscribe = store.subscribe(() =>
 );
 
 // Dispatch some actions
-store.dispatch(movePiece(2, 1, 7, 'white'));
+store.dispatch(movePiece(11, 1, 7, 'white'));
 store.dispatch(takePiece(15));
 store.dispatch(freezePiece(14));
 store.dispatch(unfreezePiece(12));

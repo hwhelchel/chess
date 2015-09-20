@@ -1,6 +1,5 @@
-import * as piece from './piece';
-
-export const TYPE = 'knight';
+import * as piece from '../utilities/piece';
+import * as pieceValidator from '../validators/piece';
 
 let validKnightMoves = ({rank, file}) => {
   return [{rank: rank - 1, file: file + 2},
@@ -20,6 +19,6 @@ let isLShapedMove = ({action, state}) => {
 };
 
 export const isValidMove = R.cond([
-  [R.allPass([piece.isValidMove, isLShapedMove]), R.prop('action')],
+  [R.allPass([pieceValidator.isValidMove, isLShapedMove]), R.prop('action')],
   [R.T, piece.reset]
 ]);

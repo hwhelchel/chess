@@ -1,6 +1,5 @@
-import * as piece from './piece';
-
-export const TYPE = 'bishop';
+import * as piece from '../utilities/piece';
+import * as pieceValidator from '../validators/piece';
 
 let isOnBoard       = ({rank, file}) => piece.inRanks(rank) && piece.inFiles(file);
 let downRange       = ({rank, file}) => R.range(0, R.min(rank, file));
@@ -34,6 +33,6 @@ let hasClearPassage = ({action, state}) => {
 export const isValidBishopMove = R.allPass([isDiagonal, hasClearPassage]);
 
 export const isValidMove = R.cond([
-  [R.allPass([piece.isValidMove, isValidBishopMove]), R.prop('action')],
+  [R.allPass([pieceValidator.isValidMove, isValidBishopMove]), R.prop('action')],
   [R.T, piece.reset]
 ]);

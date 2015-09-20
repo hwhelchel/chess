@@ -1,17 +1,15 @@
 import { initialState } from '../state/chessPieces';
 import { isValidMove } from '../validators';
+import * as piece from '../utilities/piece';
 import { MOVE_PIECE, TAKE_PIECE, FREEZE_PIECE, UNFREEZE_PIECE } from '../actions';
 
 let rank              = R.prop('rank');
 let file              = R.prop('file');
-let hasSameId         = R.pipe(R.prop('id'), R.propEq('id'));
-let findPiece         = R.pipe(hasSameId, R.find);
-let otherPieces       = R.pipe(hasSameId, R.reject);
 let mutate            = R.flip(R.curryN(3, Object.assign)({}));
-let setState          = R.curry((mutator, action, state) => [...otherPieces(action)(state), mutator(action, state)]);
+let setState          = R.curry((mutator, action, state) => [...piece.otherPieces(action)(state), mutator(action, state)]);
 
-let movedPiece        = (action, state) => mutate({ rank: rank(action), file: file(action) }, findPiece(action)(state));
-let takenPiece        = mutate({ isTaken: true });
+let movedPiece        = (action, state) => mutate({ rank: rank(action), file: file(action), isTouched: true }, piece.findPiece({action, state}));
+let takenPiece        = mutate({ isTaken: true  });
 let frozenPiece       = mutate({ isFrozen: true });
 let unfrozenPiece     = mutate({ isFrozen: false });
 

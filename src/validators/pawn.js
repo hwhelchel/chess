@@ -1,6 +1,5 @@
-import * as piece from './piece';
-
-export const TYPE = 'pawn';
+import * as piece from '../utilities/piece';
+import * as pieceValidator from '../validators/piece';
 
 let isDiagonal        = R.cond([
   [piece.isColor('white'), R.allPass([piece.didMove('rank', 1),  piece.didMoveOver(1)])],
@@ -37,6 +36,6 @@ let firstMoveTwo      = R.allPass([isForwardTwo, piece.isUnoccupied, isFirstMove
 let isValidPawnMove   = R.anyPass([pawnPromotion, firstMoveTwo, forwardUnoccupied, diagonalCapture]);
 
 export const isValidMove = R.cond([
-  [R.allPass([piece.isValidMove, isValidPawnMove]), R.prop('action')],
+  [R.allPass([pieceValidator.isValidMove, isValidPawnMove]), R.prop('action')],
   [R.T, piece.reset]
 ]);

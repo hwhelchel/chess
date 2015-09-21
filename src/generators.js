@@ -8,21 +8,22 @@ import * as king   from './generators/king';
 import * as queen  from './generators/queen';
 
 export const isAttacking = R.F;
-// export const isAttacking = (piece, state, squares) => {
-//   switch(piece.type) {
-//     case PAWN_TYPE:
-//       return pawn.isAttacking(piece, state, squares);
-//     case KNIGHT_TYPE:
-//       return knight.isAttacking(piece, state, squares);
-//     case BISHOP_TYPE:
-//       return bishop.isAttacking(piece, state, squares);
-//     case ROOK_TYPE:
-//       return rook.isAttacking(piece, state, squares);
-//     case KING_TYPE:
-//       return king.isAttacking(piece, state, squares);
-//     case QUEEN_TYPE:
-//       return queen.isAttacking(piece, state, squares);
-//     default:
-//       return false;
-//   }
-// };
+
+export const generateMoves = (piece, state) => {
+  switch(piece.type) {
+    case PAWN_TYPE:
+      return pawn.generateMoves(piece, state);
+    case KNIGHT_TYPE:
+      return knight.generateMoves(piece, state);
+    case BISHOP_TYPE:
+      return bishop.generateMoves(piece, state);
+    case ROOK_TYPE:
+      return rook.generateMoves(piece, state);
+    case KING_TYPE:
+      return king.generateMoves(piece, state);
+    case QUEEN_TYPE:
+      return queen.generateMoves(piece, state);
+    default:
+      return false;
+  }
+};

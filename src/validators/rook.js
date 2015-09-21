@@ -1,30 +1,28 @@
-import * as piece from '../utilities/piece';
-import * as pieceValidator from '../validators/piece';
+import '../utilities/piece';
+import * as piece from '../validators/piece';
 
-let sameRank = piece.didMove('rank', 0);
-let sameFile = piece.didMove('file', 0);
+let sameRank = didMove('rank', 0);
+let sameFile = didMove('file', 0);
 
-let isFileClear = ({action, state}) => {
-  let movedPiece = piece.findPiece({action, state});
-  let max = R.max(movedPiece.rank, action.rank);
-  let min = R.min(movedPiece.rank, action.rank);
+let isFileClear = R.curry(({piece, state}, move) => {
+  let max = R.max(piece.rank, move.rank);
+  let min = R.min(piece.rank, move.rank);
 
   let rankRange    = R.range(min, max);
-  let piecesOnFile = R.filter(piece => piece.file === action.file, state);
+  let piecesOnFile = R.filter(piece => piece.file === move.file, state);
   let piecesRanks  = R.map(piece => piece.rank, piecesOnFile);
   return R.none(R.intersection(rankRange, piecesRanks));
-};
+});
 
-export const isRankClear = ({action, state}) => {
-  let movedPiece = piece.findPiece({action, state});
-  let max = R.max(movedPiece.file, action.file);
-  let min = R.min(movedPiece.file, action.file);
+export const isRankClear = R.curry(({piece, state}, move) => {
+  let max = R.max(piece.file, move.file);
+  let min = R.min(piece.file, move.file);
 
   let fileRange    = R.range(min, max);
-  let piecesOnRank = R.filter(piece => piece.rank === action.rank, state);
+  let piecesOnRank = R.filter(piece => piece.rank === move.rank, state);
   let piecesFiles  = R.map(piece => piece.file, piecesOnRank);
   return R.none(R.intersection(fileRange, piecesFiles));
-};
+});
 
 let hasClearPassage = R.cond([
   [sameRank, isFileClear],
@@ -35,6 +33,6 @@ let hasClearPassage = R.cond([
 export const isValidRookMove = R.allPass([R.either([sameRank, sameFile]), hasClearPassage]);
 
 export const isValidMove = R.cond([
-  [R.allPass([pieceValidator.isValidMove, isValidRookMove]), R.prop('action')],
-  [R.T, piece.reset]
+  [R.allPass([piece.isValidMove, isValidRookMove]), R.T],
+  [R.T, R.F]
 ]);

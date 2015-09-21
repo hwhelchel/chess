@@ -8,7 +8,7 @@ let file              = R.prop('file');
 let mutate            = R.flip(R.curryN(3, Object.assign)({}));
 let setState          = R.curry((mutator, action, state) => [...piece.otherPieces(action)(state), mutator(action, state)]);
 
-let movedPiece        = (action, state) => mutate({ rank: rank(action), file: file(action), isTouched: true }, piece.findPiece({action, state}));
+let movedPiece        = (action, state) => mutate({ rank: rank(action), file: file(action), moved: true }, piece.findPiece({action, state}));
 let takenPiece        = mutate({ isTaken: true  });
 let frozenPiece       = mutate({ isFrozen: true });
 let unfrozenPiece     = mutate({ isFrozen: false });

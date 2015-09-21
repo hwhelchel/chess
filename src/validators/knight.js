@@ -1,5 +1,5 @@
-import * as piece from '../utilities/piece';
-import * as pieceValidator from '../validators/piece';
+import '../utilities/piece';
+import * as piece from '../validators/piece';
 
 let validKnightMoves = ({rank, file}) => {
   return [{rank: rank - 1, file: file + 2},
@@ -12,13 +12,11 @@ let validKnightMoves = ({rank, file}) => {
           {rank: rank - 2, file: file + 1}];
 };
 
-let isLShapedMove = ({action, state}) => {
-  let movedPiece = piece.findPiece({action, state});
-
-  return R.any(R.filter(piece.samePosition(action), validKnightMoves(movedPiece)));
-};
+let isLShapedMove = R.curry(({piece, state}, move) => {
+  return R.any(R.filter(samePosition(move), validKnightMoves(piece)));
+});
 
 export const isValidMove = R.cond([
-  [R.allPass([pieceValidator.isValidMove, isLShapedMove]), R.prop('action')],
-  [R.T, piece.reset]
+  [R.allPass([piece.isValidMove, isLShapedMove]), R.T],
+  [R.T, R.F]
 ]);

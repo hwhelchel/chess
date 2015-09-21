@@ -1,38 +1,40 @@
-import * as piece from '../utilities/piece';
-import * as pieceValidator from '../validators/piece';
+import '../utilities/piece';
+import * as piece from '../validators/piece';
 
-let isOnBoard       = ({rank, file}) => piece.inRanks(rank) && piece.inFiles(file);
+let isOnBoard       = ({rank, file}) => inRanks(rank) && inFiles(file);
 let downRange       = ({rank, file}) => R.range(0, R.min(rank, file));
-let upRange         = ({rank, file}) => R.range(0, 7 - R.max(rank, file));
+let upRange         = ({rank, file}) => R.range(0, 8 - R.max(rank, file));
 let genDiagonal     = R.curry(({rank, file}, num) => ({ rank: rank + num, file: file + num }));
 let genDownDiagonal = R.curry(({rank, file}, num) => genDiagonal(-num));
 
 let diagonalDown    = piece => R.filter(isOnBoard, R.map(genDownDiagonal(piece), downRange(piece)));
 let diagonalUp      = piece => R.filter(isOnBoard, R.map(genDiagonal(piece), upRange(piece)));
 let diagonalFor     = piece => R.concat(diagonalDown(piece), diagonalUp(piece));
-let isOnDiagonal    = R.curry((action, {rank, file}) => rank === action.rank && file === action.file);
+let isOnDiagonal    = R.curry((move, {rank, file}) => rank === move.rank && file === move.file);
 
-let isDiagonal = ({action, state}) => R.any(isOnDiagonal(action), diagonalFor(piece.findPiece({action, state})));
-let areBetween  = R.curry(({movedPiece, action}, piece) => {
-  let minRank = R.min(movedPiece.rank, action.rank);
-  let maxRank = R.max(movedPiece.rank, action.rank);
-  let minFile = R.min(movedPiece.file, action.file);
-  let maxFile = R.max(movedPiece.file, action.file);
+let areBetween  = R.curry(({piece, move}, otherPiece) => {
+  let minRank = R.min(piece, move.rank);
+  let maxRank = R.max(piece, move.rank);
+  let minFile = R.min(piece, move.file);
+  let maxFile = R.max(piece, move.file);
 
-  return minRank < piece.rank < maxRank || minFile < piece.file < maxFile
+  return minRank < otherPiece.rank < maxRank || minFile < otherPiece.file < maxFile;
 });
 
-let hasClearPassage = ({action, state}) => {
-  let movedPiece = piece.findPiece({action, state});
-  let diagonal = diagonalFor(movedPiece);
-  let piecesOnDiagonal = R.filter(piece => piece.rank - action.rank === piece.file - action.file, state);
+let isDiagonal = R.curry(({piece, state}, move) => {
+  return R.any(isOnDiagonal(move), diagonalFor(piece)));
+});
 
-  return R.none(areBetween({movedPiece, action}), piecesOnDiagonal);
+let hasClearPassage = ({piece, state}, move) => {
+  let diagonal = diagonalFor(piece);
+  let piecesOnDiagonal = R.filter(piece => piece.rank - move.rank === piece.file - move.file, state);
+
+  return R.none(areBetween({piece, move}), piecesOnDiagonal);
 };
 
 export const isValidBishopMove = R.allPass([isDiagonal, hasClearPassage]);
 
 export const isValidMove = R.cond([
-  [R.allPass([pieceValidator.isValidMove, isValidBishopMove]), R.prop('action')],
-  [R.T, piece.reset]
+  [R.allPass([piece.isValidMove, isValidBishopMove]), R.T],
+  [R.T, R.F]
 ]);

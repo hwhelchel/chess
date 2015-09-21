@@ -7,8 +7,6 @@ import * as rook   from './generators/rook';
 import * as king   from './generators/king';
 import * as queen  from './generators/queen';
 
-export const isAttacking = R.F;
-
 export const generateMoves = (piece, state) => {
   switch(piece.type) {
     case PAWN_TYPE:
@@ -24,6 +22,6 @@ export const generateMoves = (piece, state) => {
     case QUEEN_TYPE:
       return queen.generateMoves(piece, state);
     default:
-      return false;
+      return [];
   }
 };

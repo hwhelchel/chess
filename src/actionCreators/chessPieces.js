@@ -1,7 +1,7 @@
 import { MOVE_PIECE, TAKE_PIECE, FREEZE_PIECE, UNFREEZE_PIECE } from '../actions';
 
-export function movePiece(id, file, rank, color) {
-  return { type: MOVE_PIECE, id, file, rank, color };
+export function movePiece(id, file, rank) {
+  return { type: MOVE_PIECE, id, file, rank };
 }
 
 export function takePiece(id) {

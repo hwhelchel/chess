@@ -1,6 +1,6 @@
-import * as validator from '../validators/queen';
-import * as piece from '../utilities/piece';
+import * as piece from '../validators/queen';
+import '../utilities/piece';
 
 export const generateMoves(queen, state) => {
-  return R.filter(validator.isValidMove({queen, state}), piece.moves);
+  return R.filter(piece.isValidMove({queen, state}), moves);
 };

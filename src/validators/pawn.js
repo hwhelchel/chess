@@ -1,6 +1,14 @@
 import '../utilities/piece';
 import * as piece from '../validators/piece';
 
+let isRank       = is('rank');
+let isColor      = is('color');
+let isMoved      = is('moved');
+
+let isDiffColor  = R.curry((move, piece)  => piece.color !== move.color);
+let isCapture    = ({piece, state}, move) => R.any(piece => R.allPass([sharesSquare, isDiffColor])(move)(piece))(state);
+let isUnoccupied = ({piece, state}, move) => R.none(piece => sharesSquare(move)(piece))(state);
+
 let isDiagonal        = R.cond([
   [isColor('white'), R.allPass([didMove('rank', 1),  didMoveOver(1)])],
   [isColor('black'), R.allPass([didMove('rank', -1), didMoveOver(1)])],

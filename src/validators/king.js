@@ -1,22 +1,25 @@
 import '../utilities/piece';
+import * as cartographer from '../cartographers';
 import * as piece from './piece';
 import * as rook from './rook';
+
+let atDestination = (move, state) => R.find(sharesSquare(move))(state);
 
 let isRookTarget = R.curry(({piece, state}, move) {
   return R.whereEq({type: 'rook', moved: false, color: piece.color })(atDestination(move, state));
 });
 
-let notInCheck = R.F; // TODO
+let notInCheck = R.complement(cartographer.inCheck);
+
+let inFileRange     = R.range;
+let attackedSquares = R.pipe(cartographer.isUnderAttack, R.filter);
 
 let hasUnattackedPassage = R.curry(({piece, state}, move) => {
   let max = R.max(piece.file, move.file);
   let min = R.min(piece.file, move.file);
 
-  let fileRange       = R.range(min, max);
-  let attackingPieces = areAttacking({piece, state}, fileRange);
-
-  return R.isEmpty(attackingPieces);
-}); // TODO
+  return R.isEmpty(attackedSquares(color, state)(inFileRange(min, max)));
+});
 
 let isCastling = R.allPass([isTouched(false), isRookTarget, rook.isRankClear, notInCheck, hasUnattackedPassage]);
 

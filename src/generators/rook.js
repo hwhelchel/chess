@@ -1,6 +1,6 @@
-import * as validator from '../validators/rook';
-import * as piece from '../utilities/piece';
+import * as piece from '../validators/rook';
+import '../utilities/piece';
 
 export const generateMoves(rook, state) => {
-  return R.filter(validator.isValidMove({rook, state}), piece.moves);
+  return R.filter(piece.isValidMove({rook, state}), moves);
 };

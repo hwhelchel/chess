@@ -1,6 +1,6 @@
-import * as validator from '../validators/bishop';
-import * as piece from '../utilities/piece';
+import * as piece from '../validators/bishop';
+import '../utilities/piece';
 
 export const generateMoves(bishop, state) => {
-  return R.filter(validator.isValidMove({bishop, state}), piece.moves);
+  return R.filter(piece.isValidMove({bishop, state}), moves);
 };

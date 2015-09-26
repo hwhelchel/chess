@@ -20,3 +20,5 @@ export const didMoveOver = R.curry(distance, {piece, state}, move) => {
 export const sharesSquare = move => R.whereEq({ rank: move.rank, file: move.file });
 
 export const moves = R.lift((rank, file) => ({rank, file}))(R.range(0, 8), R.range(0, 8));
+
+export const isColor = is('color');

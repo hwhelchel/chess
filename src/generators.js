@@ -7,21 +7,21 @@ import * as rook   from './generators/rook';
 import * as king   from './generators/king';
 import * as queen  from './generators/queen';
 
-export const generateMoves = (piece, state) => {
+export const generateMoves = R.curry((state, piece) => {
   switch(piece.type) {
     case PAWN_TYPE:
-      return pawn.generateMoves(piece, state);
+      return pawn.generateMoves(state, piece);
     case KNIGHT_TYPE:
-      return knight.generateMoves(piece, state);
+      return knight.generateMoves(state, piece);
     case BISHOP_TYPE:
-      return bishop.generateMoves(piece, state);
+      return bishop.generateMoves(state, piece);
     case ROOK_TYPE:
-      return rook.generateMoves(piece, state);
+      return rook.generateMoves(state, piece);
     case KING_TYPE:
-      return king.generateMoves(piece, state);
+      return king.generateMoves(state, piece);
     case QUEEN_TYPE:
-      return queen.generateMoves(piece, state);
+      return queen.generateMoves(state, piece);
     default:
       return [];
   }
-};
+});

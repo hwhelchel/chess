@@ -2,7 +2,6 @@ import '../utilities/piece';
 import * as piece from '../validators/piece';
 
 let isRank       = is('rank');
-let isColor      = is('color');
 let isMoved      = is('moved');
 
 let isDiffColor  = R.curry((move, piece)  => piece.color !== move.color);

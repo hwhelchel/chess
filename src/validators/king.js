@@ -12,13 +12,14 @@ let isRookTarget = R.curry(({piece, state}, move) {
 let notInCheck = R.complement(cartographer.inCheck);
 
 let inFileRange     = R.range;
-let attackedSquares = R.pipe(cartographer.isUnderAttack, R.filter);
+
+let attackedSquares = R.filter(cartographer.isUnderAttack(color, state))
 
 let hasUnattackedPassage = R.curry(({piece, state}, move) => {
   let max = R.max(piece.file, move.file);
   let min = R.min(piece.file, move.file);
 
-  return R.isEmpty(attackedSquares(color, state)(inFileRange(min, max)));
+  return R.isEmpty(attackedSquares(piece.color, state, inFileRange(min, max)));
 });
 
 let isCastling = R.allPass([isTouched(false), isRookTarget, rook.isRankClear, notInCheck, hasUnattackedPassage]);
